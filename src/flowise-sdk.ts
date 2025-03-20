@@ -64,13 +64,15 @@ export default class FlowiseClient {
 
     // Method to create a new prediction and handle streaming response
     async createPrediction<T extends PredictionData>(
-        data: T
+        data: T,
+        signal?: AbortSignal
     ): Promise<PredictionResponse<T>> {
         const { chatflowId, streaming } = data;
 
         // Check if chatflow is available to stream
         const chatFlowStreamingUrl = `${this.baseUrl}/api/v1/chatflows-streaming/${chatflowId}`;
         const resp = await fetch(chatFlowStreamingUrl, {
+            signal,
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
